@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="capture_icon_16x16">icons/capture_icon_16x16.png</file>
+        <file alias="capture_icon_32x32">icons/capture_icon_32x32.png</file>
+        <file alias="capture_icon_64x64">icons/capture_icon_64x64.png</file>
+        <file alias="capture_icon_128x128">icons/capture_icon_128x128.png</file>
+        <file alias="greenbulb_icon_16x16">icons/greenbulb_icon_16x16.png</file>
+        <file alias="greenbulb_icon_32x32">icons/greenbulb_icon_32x32.png</file>
+        <file alias="greenbulb_icon_64x64">icons/greenbulb_icon_64x64.png</file>
+        <file alias="greenbulb_icon_128x128">icons/greenbulb_icon_128x128.png</file>
+        <file alias="redbulb_icon_16x16">icons/redbulb_icon_16x16.png</file>
+        <file alias="redbulb_icon_32x32">icons/redbulb_icon_32x32.png</file>
+        <file alias="redbulb_icon_64x64">icons/redbulb_icon_64x64.png</file>
+        <file alias="redbulb_icon_128x128">icons/redbulb_icon_128x128.png</file>
+        <file alias="infinity_icon_16x16">icons/infinity_icon_16x16.png</file>
+        <file alias="infinity_icon_32x32">icons/infinity_icon_32x32.png</file>
+        <file alias="infinity_icon_64x64">icons/infinity_icon_64x64.png</file>
+        <file alias="infinity_icon_128x128">icons/infinity_icon_128x128.png</file>
+        <file alias="2dview_icon_16x16">icons/2dview_icon_16x16.png</file>
+        <file alias="2dview_icon_32x32">icons/2dview_icon_32x32.png</file>
+        <file alias="2dview_icon_64x64">icons/2dview_icon_64x64.png</file>
+        <file alias="2dview_icon_128x128">icons/2dview_icon_128x128.png</file>
+        <file alias="3dview_icon_16x16">icons/3dview_icon_16x16.png</file>
+        <file alias="3dview_icon_32x32">icons/3dview_icon_32x32.png</file>
+        <file alias="3dview_icon_64x64">icons/3dview_icon_64x64.png</file>
+        <file alias="3dview_icon_128x128">icons/3dview_icon_128x128.png</file>
+        <file alias="hdv_logo">icons/HD_Vision_Logo.ico</file>
+    </qresource>
+</RCC>

@@ -9,10 +9,10 @@
 
 
 
-// Starts Luxor 3D Aquisition, does wait for answer
-extern eUdpStatus LuxorStartAquisition(std::string ip, std::string port);
-
-// Stops Luxor 3D Aquisition, does wait for answer
-extern eUdpStatus LuxorStopAquisition(std::string ip, std::string port);
+// Sends a trigger request, waits for answer and returns 6D pose if found
+extern eUdpStatus LuxorTrigger6DPose(std::array<float, 6>& pose, std::string ip, std::string port);
 
 extern eUdpStatus LuxorSendTriggerWaitResponse(std::string ip, std::string port);
+
+extern bool LuxorStatusOK(std::string ip, std::string port);
+

@@ -42,21 +42,68 @@ eUdpStatus LuxorSendTriggerWaitResponse(std::string ip, std::string port) {
       status = UDP_STATUS_ERROR_UNKNOWN_FRAME_TYPE;
       std::cout << "\n---\nException:\nframe_type: " << recv_buf[0].header.frame_type
         << "\nid: " << recv_buf[0].header.frame_id << std::endl;
+      throw(std::runtime_error(std::string("Package received from luxor does not have frametype 503")));
+      std::cout << "---\n\n";
+    }
+  }
+  catch (std::exception& e) {
+    std::cout << e.what() << std::endl;
+//    throw;
+  }
+  return status;
+}
+
+
+
+eUdpStatus LuxorTrigger6DPose(std::array<float, 6>& pose, std::string ip, std::string port) {
+  eUdpStatus status = eUdpStatus::UDP_STATUS_ERROR_UNKNOWN;
+  try {
+    // open connection
+    boost::asio::io_service                 io_service;
+    boost::asio::ip::udp::resolver          resolver(io_service);
+    boost::asio::ip::udp::resolver::query   query(boost::asio::ip::udp::v4(), ip, port);
+
+    boost::asio::ip::udp::endpoint          remote_endpoint = *resolver.resolve(query);
+
+    boost::asio::ip::udp::socket            socket(io_service);
+    socket.open(boost::asio::ip::udp::v4());
+
+
+    // Send trigger request
+    udp_message_data request_data;
+    udp::send_message(socket, remote_endpoint, UDP_FRAME_TYPE_TRIGGER_REQUEST, request_data);
+
+    // Recieve status
+    boost::array<udp_message, 1> recv_buf;
+    boost::asio::ip::udp::endpoint sender_endpoint;
+    socket.receive_from(boost::asio::buffer(recv_buf), sender_endpoint);   // blocks until package is received
+
+    if (!udp::test_checksum(recv_buf[0]))
+      throw(std::runtime_error("Package received by luxor has wrong checksum"));
+    if (recv_buf[0].data.trigger_response.result != eUdpStatus::UDP_STATUS_OK) {
+        throw(std::runtime_error("Package received from luxor does not have status UDP_STATUS_OK"));
+    }
+    if (recv_buf[0].header.frame_type != UDP_FRAME_TYPE_TRIGGER_RESPONSE_6DOF) {
+      status = UDP_STATUS_ERROR_UNKNOWN_FRAME_TYPE;
+      std::cout << "\n---\nException:\nframe_type: " << recv_buf[0].header.frame_type
+        << "\nid: " << recv_buf[0].header.frame_id << std::endl;
       throw(std::runtime_error(std::string("Package received from luxor does not have frametype 510")));
       std::cout << "---\n\n";
     }
+
+    status = static_cast<eUdpStatus>(recv_buf[0].data.trigger_response_6dof.result);
+    for (size_t i = 0; i < 6; ++i)
+      pose[i] = recv_buf[0].data.trigger_response_6dof.pos[i];
   }
   catch (std::exception& e) {
     std::cout << e.what() << std::endl;
-    throw;
+//    throw;
   }
+
   return status;
 }
 
-
-
-eUdpStatus LuxorStartAquisition(std::string ip, std::string port) {
-  eUdpStatus status = eUdpStatus::UDP_STATUS_OK;
+bool LuxorStatusOK(std::string ip, std::string port) {
   try {
     // open connection
     boost::asio::io_service                 io_service;
@@ -68,10 +115,10 @@ eUdpStatus LuxorStartAquisition(std::string ip, std::string port) {
     boost::asio::ip::udp::socket            socket(io_service);
     socket.open(boost::asio::ip::udp::v4());
 
-
     // Send trigger request
     udp_message_data request_data;
-    udp::send_message(socket, remote_endpoint, UDP_FRAME_TYPE_ACQ_START_REQUEST, request_data);
+    udp::send_message(socket, remote_endpoint, UDP_FRAME_TYPE_NOP, request_data);
+
 
     // Recieve status
     boost::array<udp_message, 1> recv_buf;
@@ -80,63 +127,17 @@ eUdpStatus LuxorStartAquisition(std::string ip, std::string port) {
 
     if (!udp::test_checksum(recv_buf[0]))
       throw(std::runtime_error("Package received by luxor has wrong checksum"));
-    if (recv_buf[0].data.trigger_response.result != eUdpStatus::UDP_STATUS_OK) {
-        throw(std::runtime_error("Package received from luxor does not have status UDP_STATUS_OK"));
+    if( recv_buf[0].data.trigger_response.result != eUdpStatus::UDP_STATUS_OK){
+        return false;
     }
-    if (recv_buf[0].header.frame_type != UDP_FRAME_TYPE_ACQ_START_RESPONSE) {
-      status = UDP_STATUS_ERROR_UNKNOWN_FRAME_TYPE;
-      std::cout << "\n---\nException:\nframe_type: " << recv_buf[0].header.frame_type
-        << "\nid: " << recv_buf[0].header.frame_id << std::endl;
-      throw(std::runtime_error(std::string("Package received from luxor does not have frametype 507")));
-      std::cout << "---\n\n";
+    else{
+        return true;
     }
   }
   catch (std::exception& e) {
     std::cout << e.what() << std::endl;
     throw;
   }
-  return status;
+//  return status;
 }
 
-eUdpStatus LuxorStopAquisition(std::string ip, std::string port) {
-  eUdpStatus status = eUdpStatus::UDP_STATUS_OK;
-  try {
-    // open connection
-    boost::asio::io_service                 io_service;
-    boost::asio::ip::udp::resolver          resolver(io_service);
-    boost::asio::ip::udp::resolver::query   query(boost::asio::ip::udp::v4(), ip, port);
-
-    boost::asio::ip::udp::endpoint          remote_endpoint = *resolver.resolve(query);
-
-    boost::asio::ip::udp::socket            socket(io_service);
-    socket.open(boost::asio::ip::udp::v4());
-
-
-    // Send trigger request
-    udp_message_data request_data;
-    udp::send_message(socket, remote_endpoint, UDP_FRAME_TYPE_ACQ_STOP_REQUEST, request_data);
-
-    // Recieve status
-    boost::array<udp_message, 1> recv_buf;
-    boost::asio::ip::udp::endpoint sender_endpoint;
-    socket.receive_from(boost::asio::buffer(recv_buf), sender_endpoint);   // blocks until package is received
-
-    if (!udp::test_checksum(recv_buf[0]))
-      throw(std::runtime_error("Package received by luxor has wrong checksum"));
-    if (recv_buf[0].data.trigger_response.result != eUdpStatus::UDP_STATUS_OK) {
-        throw(std::runtime_error("Package received from luxor does not have status UDP_STATUS_OK"));
-    }
-    if (recv_buf[0].header.frame_type != UDP_FRAME_TYPE_ACQ_STOP_RESPONSE) {
-      status = UDP_STATUS_ERROR_UNKNOWN_FRAME_TYPE;
-      std::cout << "\n---\nException:\nframe_type: " << recv_buf[0].header.frame_type
-        << "\nid: " << recv_buf[0].header.frame_id << std::endl;
-      throw(std::runtime_error(std::string("Package received from luxor does not have frametype 508")));
-      std::cout << "---\n\n";
-    }
-  }
-  catch (std::exception& e) {
-    std::cout << e.what() << std::endl;
-    throw;
-  }
-  return status;
-}

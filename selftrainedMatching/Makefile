@@ -233,13 +233,21 @@ Makefile: selftrainedMatching.pro C:\Qt\5.9.2\msvc2013_64\mkspecs\win32-msvc\qma
 		C:\Qt\5.9.2\msvc2013_64\mkspecs\features\win32\console.prf \
 		C:\Qt\5.9.2\msvc2013_64\mkspecs\features\precompile_header.prf \
 		C:\Qt\5.9.2\msvc2013_64\mkspecs\features\warn_on.prf \
+		C:\Qt\5.9.2\msvc2013_64\mkspecs\features\qt.prf \
+		C:\Qt\5.9.2\msvc2013_64\mkspecs\features\resources.prf \
+		C:\Qt\5.9.2\msvc2013_64\mkspecs\features\moc.prf \
+		C:\Qt\5.9.2\msvc2013_64\mkspecs\features\win32\opengl.prf \
+		C:\Qt\5.9.2\msvc2013_64\mkspecs\features\uic.prf \
 		C:\Qt\5.9.2\msvc2013_64\mkspecs\features\qmake_use.prf \
 		C:\Qt\5.9.2\msvc2013_64\mkspecs\features\file_copies.prf \
 		C:\Qt\5.9.2\msvc2013_64\mkspecs\features\testcase_targets.prf \
 		C:\Qt\5.9.2\msvc2013_64\mkspecs\features\exceptions.prf \
 		C:\Qt\5.9.2\msvc2013_64\mkspecs\features\yacc.prf \
 		C:\Qt\5.9.2\msvc2013_64\mkspecs\features\lex.prf \
-		selftrainedMatching.pro
+		selftrainedMatching.pro \
+		C:\Qt\5.9.2\msvc2013_64\lib\Qt5Widgets.prl \
+		C:\Qt\5.9.2\msvc2013_64\lib\Qt5Gui.prl \
+		C:\Qt\5.9.2\msvc2013_64\lib\Qt5Core.prl
 	$(QMAKE) -o Makefile selftrainedMatching.pro -spec win32-msvc
 C:\Qt\5.9.2\msvc2013_64\mkspecs\features\spec_pre.prf:
 C:\Qt\5.9.2\msvc2013_64\mkspecs\common\angle.conf:
@@ -399,6 +407,11 @@ C:\Qt\5.9.2\msvc2013_64\mkspecs\features\default_post.prf:
 C:\Qt\5.9.2\msvc2013_64\mkspecs\features\win32\console.prf:
 C:\Qt\5.9.2\msvc2013_64\mkspecs\features\precompile_header.prf:
 C:\Qt\5.9.2\msvc2013_64\mkspecs\features\warn_on.prf:
+C:\Qt\5.9.2\msvc2013_64\mkspecs\features\qt.prf:
+C:\Qt\5.9.2\msvc2013_64\mkspecs\features\resources.prf:
+C:\Qt\5.9.2\msvc2013_64\mkspecs\features\moc.prf:
+C:\Qt\5.9.2\msvc2013_64\mkspecs\features\win32\opengl.prf:
+C:\Qt\5.9.2\msvc2013_64\mkspecs\features\uic.prf:
 C:\Qt\5.9.2\msvc2013_64\mkspecs\features\qmake_use.prf:
 C:\Qt\5.9.2\msvc2013_64\mkspecs\features\file_copies.prf:
 C:\Qt\5.9.2\msvc2013_64\mkspecs\features\testcase_targets.prf:
@@ -406,6 +419,9 @@ C:\Qt\5.9.2\msvc2013_64\mkspecs\features\exceptions.prf:
 C:\Qt\5.9.2\msvc2013_64\mkspecs\features\yacc.prf:
 C:\Qt\5.9.2\msvc2013_64\mkspecs\features\lex.prf:
 selftrainedMatching.pro:
+C:\Qt\5.9.2\msvc2013_64\lib\Qt5Widgets.prl:
+C:\Qt\5.9.2\msvc2013_64\lib\Qt5Gui.prl:
+C:\Qt\5.9.2\msvc2013_64\lib\Qt5Core.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile selftrainedMatching.pro -spec win32-msvc
 
@@ -418,6 +434,22 @@ clean: release-clean debug-clean  FORCE
 distclean: release-distclean debug-distclean  FORCE
 	-$(DEL_FILE) Makefile
 	-$(DEL_FILE) .qmake.stash selftrainedMatching.lib
+
+release-mocclean:
+	@set MAKEFLAGS=$(MAKEFLAGS)
+	$(MAKE) -f $(MAKEFILE).Release mocclean
+debug-mocclean:
+	@set MAKEFLAGS=$(MAKEFLAGS)
+	$(MAKE) -f $(MAKEFILE).Debug mocclean
+mocclean: release-mocclean debug-mocclean
+
+release-mocables:
+	@set MAKEFLAGS=$(MAKEFLAGS)
+	$(MAKE) -f $(MAKEFILE).Release mocables
+debug-mocables:
+	@set MAKEFLAGS=$(MAKEFLAGS)
+	$(MAKE) -f $(MAKEFILE).Debug mocables
+mocables: release-mocables debug-mocables
 
 check: first
 

@@ -1,0 +1,8 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+<file alias="Release:LIBS">C:/Users/dbutov/Desktop/Jacob_Demo_selftrained/selftrainedMatching/Release:LIBS</file>
+<file alias="+=">C:/Users/dbutov/Desktop/Jacob_Demo_selftrained/selftrainedMatching/+=</file>
+<file alias="-LC:/Software/Luxor/hw_interface/src/stages/stage_opcua_festo/Festo-comm-lib/libs/win_x64_release">C:/Users/dbutov/Desktop/Jacob_Demo_selftrained/selftrainedMatching/-LC:/Software/Luxor/hw_interface/src/stages/stage_opcua_festo/Festo-comm-lib/libs/win_x64_release</file>
+<file alias="-lFestoCommLib">C:/Users/dbutov/Desktop/Jacob_Demo_selftrained/selftrainedMatching/-lFestoCommLib</file>
+</qresource>
+</RCC>
